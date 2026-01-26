@@ -21,7 +21,7 @@ case upper(Trim(prd_line))
             ORDER BY prd_start_dt
         )
     ) AS prd_end_dt
-    into into silver.[crm_prd_info]
+    into silver.[crm_prd_info]
 	from [bronze].[crm_prd_info]
 
 
