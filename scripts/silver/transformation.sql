@@ -45,6 +45,31 @@ select cst_id,cst_key,
 from max_date
 where rank_max_date=1 and cst_id is not null
 
+/*transformation for silver.crm_sales_details*/
+
+select sls_ord_num,sls_prd_key,sls_cust_id,
+       case
+			when sls_order_dt <0 or len(sls_order_dt)!=8 then null
+	        else cast(cast(sls_order_dt as varchar(50)) as date) 
+	   end as sls_order_dt,
+       case
+			when sls_ship_dt <0 or len(sls_ship_dt)!=8 then null
+	        else cast(cast(sls_ship_dt as varchar) as date) 
+	   end as sls_ship_dt,
+	     case
+			when sls_due_dt <0 or len(sls_due_dt)!=8 then null
+	        else cast(cast(sls_due_dt as varchar) as date) 
+	   end as sls_due_dt,
+	   round(case when sls_sales<0 and sls_price>0 then sls_price*sls_quantity 
+	          else sls_sales
+		 end ,2)as sls_sales,
+    round(case 
+	     when sls_price<0 and sls_sales>0 then sls_sales/nullif(sls_quantity,0)
+		 else sls_price
+		 end,2 )as sls_price
+		 into silver.crm_sales_details
+from bronze.crm_sales_details
+
 
 
 
