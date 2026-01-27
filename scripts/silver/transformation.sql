@@ -82,7 +82,21 @@ select
 	into silver.[erp_LOC_A101]
 from [bronze].[erp_LOC_A101]
 
+/*transformation for silver.erp_CUST_AZ12*/
 
+select 
+      case when CID like '%NAS%' then substring(CID,4,len(CID))
+      else CID end as cid ,
+	  BDATE,
+	  case 
+			when upper(trim(Gen)) ='F' then 'Female'
+			when upper(trim(Gen)) ='M' then 'Male'
+			when Gen='' or Gen is null then 'N/a'
+			else trim(Gen)
+		end as Gen
+into silver.[erp_CUST_AZ12]
+from [bronze].[erp_CUST_AZ12]
+where BDATE<=GETDATE() 
 
 
 
