@@ -71,7 +71,16 @@ select sls_ord_num,sls_prd_key,sls_cust_id,
 from bronze.crm_sales_details
 
 
+/*transformation for silver.erp_LOC_A101*/
 
+select
+	replace(CID,'-','') as CID ,
+	case when upper(Trim(CNTRY)) in ('US','UNITED STATES','USA') then 'UNITED STATES'
+		 when upper(Trim(CNTRY)) in ('DE','GERMANY') then 'GERMANY'
+		 when CNTRY is null or CNTRY='' then 'n/a'
+		 else upper(Trim(CNTRY)) end as CNTRY
+	into silver.[erp_LOC_A101]
+from [bronze].[erp_LOC_A101]
 
 
 
