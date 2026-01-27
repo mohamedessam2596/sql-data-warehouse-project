@@ -98,15 +98,11 @@ into silver.[erp_CUST_AZ12]
 from [bronze].[erp_CUST_AZ12]
 where BDATE<=GETDATE() 
 
-
-
-
-
-
-
-
-
-
+	
+/*transformation for silver.crm_prd_info*/
+select * 
+into silver.[erp_PX_CAT_G1V2]
+from [bronze].[erp_PX_CAT_G1V2]
 
 
 
